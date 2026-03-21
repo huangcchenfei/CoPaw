@@ -7,7 +7,7 @@ const defaultConfig = {
     prefix: "copaw",
     leftHeader: {
       logo: "",
-      title: "Work with CoPaw",
+      title: "历史消息",
     },
   },
   sender: {

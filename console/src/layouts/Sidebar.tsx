@@ -315,11 +315,7 @@ export default function Sidebar({ selectedKey }: SidebarProps) {
         {!collapsed && (
           <div className={styles.logoWrapper}>
             <img
-              src={
-                isDark
-                  ? `${import.meta.env.BASE_URL}dark-logo.png`
-                  : `${import.meta.env.BASE_URL}logo.png`
-              }
+              src={`${import.meta.env.BASE_URL}hand-logo.png`}
               alt="CoPaw"
               className={styles.logoImg}
             />

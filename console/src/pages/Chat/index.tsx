@@ -14,6 +14,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import sessionApi from "./sessionApi";
 import defaultConfig, { getDefaultConfig } from "./OptionsPanel/defaultConfig";
 import { chatApi } from "../../api/modules/chat";
+import Weather from "./Weather";
 import { getApiToken, getApiUrl } from "../../api/config";
 import { providerApi } from "../../api/modules/provider";
 import api from "../../api";
@@ -835,6 +836,9 @@ export default function ChatPage() {
           },
         ],
         replace: true,
+      },
+      customToolRenderConfig: {
+        "weather search mock": Weather,
       },
     } as unknown as IAgentScopeRuntimeWebUIOptions;
   }, [wrappedSessionApi, customFetch, copyResponse, t, isDark]);

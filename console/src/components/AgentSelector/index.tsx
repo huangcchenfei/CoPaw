@@ -8,8 +8,12 @@ import styles from "./index.module.less";
 
 export default function AgentSelector() {
   const { t } = useTranslation();
-  const { selectedAgent, agents, setSelectedAgent, setAgents } =
-    useAgentStore();
+  const {
+    selectedAgent,
+    agents = [],
+    setSelectedAgent,
+    setAgents,
+  } = useAgentStore();
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
