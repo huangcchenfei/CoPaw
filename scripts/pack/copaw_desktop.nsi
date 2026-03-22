@@ -15,7 +15,7 @@
   !define OUTPUT_EXE "dist\XiaoshuClaw-Setup-${COPAW_VERSION}.exe"
 !endif
 
-Name "小数Claw"
+Name "XiaoshuClaw"
 OutFile "${OUTPUT_EXE}"
 InstallDir "$LOCALAPPDATA\XiaoshuClaw"
 InstallDirRegKey HKCU "Software\XiaoshuClaw" "InstallPath"
@@ -33,24 +33,24 @@ RequestExecutionLevel user
   !define UNPACKED "dist\win-unpacked"
 !endif
 
-Section "小数Claw" SEC01
+Section "XiaoshuClaw" SEC01
   SetOutPath "$INSTDIR"
   File /r "${UNPACKED}\*.*"
   WriteRegStr HKCU "Software\XiaoshuClaw" "InstallPath" "$INSTDIR"
   WriteUninstaller "$INSTDIR\Uninstall.exe"
 
   ; Main shortcut - uses VBS to hide console window
-  CreateShortcut "$SMPROGRAMS\小数Claw.lnk" "$INSTDIR\XiaoshuClaw.vbs" "" "$INSTDIR\icon.ico" 0
-  CreateShortcut "$DESKTOP\小数Claw.lnk" "$INSTDIR\XiaoshuClaw.vbs" "" "$INSTDIR\icon.ico" 0
+  CreateShortcut "$SMPROGRAMS\XiaoshuClaw.lnk" "$INSTDIR\XiaoshuClaw.vbs" "" "$INSTDIR\icon.ico" 0
+  CreateShortcut "$DESKTOP\XiaoshuClaw.lnk" "$INSTDIR\XiaoshuClaw.vbs" "" "$INSTDIR\icon.ico" 0
   
   ; Debug shortcut - shows console window for troubleshooting
-  CreateShortcut "$SMPROGRAMS\小数Claw (Debug).lnk" "$INSTDIR\XiaoshuClaw (Debug).bat" "" "$INSTDIR\icon.ico" 0
+  CreateShortcut "$SMPROGRAMS\XiaoshuClaw (Debug).lnk" "$INSTDIR\XiaoshuClaw (Debug).bat" "" "$INSTDIR\icon.ico" 0
 SectionEnd
 
 Section "Uninstall"
-  Delete "$SMPROGRAMS\小数Claw.lnk"
-  Delete "$SMPROGRAMS\小数Claw (Debug).lnk"
-  Delete "$DESKTOP\小数Claw.lnk"
+  Delete "$SMPROGRAMS\XiaoshuClaw.lnk"
+  Delete "$SMPROGRAMS\XiaoshuClaw (Debug).lnk"
+  Delete "$DESKTOP\XiaoshuClaw.lnk"
   RMDir /r "$INSTDIR"
   DeleteRegKey HKCU "Software\XiaoshuClaw"
 SectionEnd
