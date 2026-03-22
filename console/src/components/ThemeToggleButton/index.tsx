@@ -1,15 +1,13 @@
-import { Tooltip, Button } from "antd";
-import { SunOutlined, MoonOutlined } from "@ant-design/icons";
+import { Tooltip } from "antd";
 import { useTheme } from "../../contexts/ThemeContext";
 import { useTranslation } from "react-i18next";
-import styles from "./index.module.less";
 
 /**
  * ThemeToggleButton - toggles between light and dark theme.
  * Displays a sun icon in dark mode and a moon icon in light mode.
  */
 export default function ThemeToggleButton() {
-  const { isDark, toggleTheme } = useTheme();
+  const { isDark } = useTheme();
   const { t } = useTranslation();
 
   return (
