@@ -14,7 +14,7 @@ export default function ThemeToggleButton() {
 
   return (
     <Tooltip title={t(isDark ? "theme.lightMode" : "theme.darkMode")}>
-      <Button
+{/*      <Button
         className={styles.toggleBtn}
         onClick={toggleTheme}
         aria-label={t(isDark ? "theme.switchToLight" : "theme.switchToDark")}
@@ -22,7 +22,7 @@ export default function ThemeToggleButton() {
         icon={isDark ? <SunOutlined /> : <MoonOutlined />}
       >
         {t(isDark ? "theme.light" : "theme.dark")}
-      </Button>
+      </Button>*/}
     </Tooltip>
   );
 }
