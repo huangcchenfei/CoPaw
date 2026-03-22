@@ -173,7 +173,7 @@ def desktop_cmd(
                 logger.info("HTTP ready, creating webview window...")
                 api = WebViewAPI()
                 webview.create_window(
-                    "CoPaw Desktop",
+                    "MyBot Desktop",
                     url,
                     width=1280,
                     height=800,
