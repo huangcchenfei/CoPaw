@@ -153,7 +153,7 @@ if (Test-Path $pythonExe) {
 }
 
 # Main launcher .bat (will be hidden by VBS)
-$LauncherBat = Join-Path $EnvRoot "小数Claw.bat"
+$LauncherBat = Join-Path $EnvRoot "XiaoshuClaw.bat"
 @"
 @echo off
 chcp 65001 >nul
@@ -187,7 +187,7 @@ if not exist "%USERPROFILE%\.copaw\config.json" (
 "@ | Set-Content -Path $LauncherBat -Encoding UTF8
 
 # Debug launcher .bat (shows console)
-$DebugBat = Join-Path $EnvRoot "小数Claw (Debug).bat"
+$DebugBat = Join-Path $EnvRoot "XiaoshuClaw (Debug).bat"
 @"
 @echo off
 chcp 65001 >nul
@@ -215,7 +215,7 @@ if defined CERT_FILE (
 )
 
 echo ====================================
-echo 小数Claw - Debug Mode
+echo XiaoshuClaw - Debug Mode
 echo ====================================
 echo Working Directory: %cd%
 echo Python: "%~dp0python.exe"
@@ -229,20 +229,20 @@ if not exist "%USERPROFILE%\.copaw\config.json" (
   echo [Init] Creating config...
   "%~dp0python.exe" -u -m copaw init --defaults --accept-security
 )
-echo [Launch] Starting 小数Claw with log-level=%COPAW_LOG_LEVEL%...
+echo [Launch] Starting XiaoshuClaw with log-level=%COPAW_LOG_LEVEL%...
 echo Press Ctrl+C to stop
 echo.
 "%~dp0python.exe" -u -m copaw desktop --log-level %COPAW_LOG_LEVEL%
 echo.
-echo [Exit] 小数Claw closed
+echo [Exit] XiaoshuClaw closed
 pause
 "@ | Set-Content -Path $DebugBat -Encoding UTF8
 
 # VBScript launcher (no console window)
-$LauncherVbs = Join-Path $EnvRoot "小数Claw.vbs"
+$LauncherVbs = Join-Path $EnvRoot "XiaoshuClaw.vbs"
 @"
 Set WshShell = CreateObject("WScript.Shell")
-batPath = CreateObject("Scripting.FileSystemObject").GetParentFolderName(WScript.ScriptFullName) & "\小数Claw.bat"
+batPath = CreateObject("Scripting.FileSystemObject").GetParentFolderName(WScript.ScriptFullName) & "\XiaoshuClaw.bat"
 WshShell.Run Chr(34) & batPath & Chr(34), 0, False
 Set WshShell = Nothing
 "@ | Set-Content -Path $LauncherVbs -Encoding UTF8
@@ -277,7 +277,7 @@ if (-not $Version) {
 if (-not $Version) { $Version = "0.0.0"; Write-Host "[build_win] WARN: Using fallback version 0.0.0" }
 Write-Host "[build_win] Version determined: $Version"
 Write-Host "[build_win] COPAW_VERSION=$Version OUTPUT_EXE will be under $Dist"
-$OutInstaller = Join-Path (Join-Path $RepoRoot $Dist) "小数Claw-Setup-$Version.exe"
+$OutInstaller = Join-Path (Join-Path $RepoRoot $Dist) "XiaoshuClaw-Setup-$Version.exe"
 # Pass absolute paths to NSIS (keep backslashes).
 $UnpackedFull = (Resolve-Path $EnvRoot).Path
 $OutputExeNsi = [System.IO.Path]::GetFullPath($OutInstaller)

@@ -1,6 +1,6 @@
-; 小数Claw NSIS installer. Run makensis from repo root after
+; XiaoshuClaw NSIS installer. Run makensis from repo root after
 ; building dist/win-unpacked (see scripts/pack/build_win.ps1).
-; Usage: makensis /DCOPAW_VERSION=1.2.3 /DOUTPUT_EXE=dist\小数Claw-Setup-1.2.3.exe scripts\pack\copaw_desktop.nsi
+; Usage: makensis /DCOPAW_VERSION=1.2.3 /DOUTPUT_EXE=dist\XiaoshuClaw-Setup-1.2.3.exe scripts\pack\copaw_desktop.nsi
 
 !include "MUI2.nsh"
 !define MUI_ABORTWARNING
@@ -12,13 +12,13 @@
   !define COPAW_VERSION "0.0.0"
 !endif
 !ifndef OUTPUT_EXE
-  !define OUTPUT_EXE "dist\小数Claw-Setup-${COPAW_VERSION}.exe"
+  !define OUTPUT_EXE "dist\XiaoshuClaw-Setup-${COPAW_VERSION}.exe"
 !endif
 
 Name "小数Claw"
 OutFile "${OUTPUT_EXE}"
-InstallDir "$LOCALAPPDATA\小数Claw"
-InstallDirRegKey HKCU "Software\小数Claw" "InstallPath"
+InstallDir "$LOCALAPPDATA\XiaoshuClaw"
+InstallDirRegKey HKCU "Software\XiaoshuClaw" "InstallPath"
 RequestExecutionLevel user
 
 !insertmacro MUI_PAGE_DIRECTORY
@@ -36,15 +36,15 @@ RequestExecutionLevel user
 Section "小数Claw" SEC01
   SetOutPath "$INSTDIR"
   File /r "${UNPACKED}\*.*"
-  WriteRegStr HKCU "Software\小数Claw" "InstallPath" "$INSTDIR"
+  WriteRegStr HKCU "Software\XiaoshuClaw" "InstallPath" "$INSTDIR"
   WriteUninstaller "$INSTDIR\Uninstall.exe"
 
   ; Main shortcut - uses VBS to hide console window
-  CreateShortcut "$SMPROGRAMS\小数Claw.lnk" "$INSTDIR\小数Claw.vbs" "" "$INSTDIR\icon.ico" 0
-  CreateShortcut "$DESKTOP\小数Claw.lnk" "$INSTDIR\小数Claw.vbs" "" "$INSTDIR\icon.ico" 0
+  CreateShortcut "$SMPROGRAMS\小数Claw.lnk" "$INSTDIR\XiaoshuClaw.vbs" "" "$INSTDIR\icon.ico" 0
+  CreateShortcut "$DESKTOP\小数Claw.lnk" "$INSTDIR\XiaoshuClaw.vbs" "" "$INSTDIR\icon.ico" 0
   
   ; Debug shortcut - shows console window for troubleshooting
-  CreateShortcut "$SMPROGRAMS\小数Claw (Debug).lnk" "$INSTDIR\小数Claw (Debug).bat" "" "$INSTDIR\icon.ico" 0
+  CreateShortcut "$SMPROGRAMS\小数Claw (Debug).lnk" "$INSTDIR\XiaoshuClaw (Debug).bat" "" "$INSTDIR\icon.ico" 0
 SectionEnd
 
 Section "Uninstall"
@@ -52,5 +52,5 @@ Section "Uninstall"
   Delete "$SMPROGRAMS\小数Claw (Debug).lnk"
   Delete "$DESKTOP\小数Claw.lnk"
   RMDir /r "$INSTDIR"
-  DeleteRegKey HKCU "Software\小数Claw"
+  DeleteRegKey HKCU "Software\XiaoshuClaw"
 SectionEnd
