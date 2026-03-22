@@ -153,7 +153,7 @@ if (Test-Path $pythonExe) {
 }
 
 # Main launcher .bat (will be hidden by VBS)
-$LauncherBat = Join-Path $EnvRoot "CoPaw Desktop.bat"
+$LauncherBat = Join-Path $EnvRoot "TimoBot.bat"
 @"
 @echo off
 cd /d "%~dp0"
@@ -186,7 +186,7 @@ if not exist "%USERPROFILE%\.copaw\config.json" (
 "@ | Set-Content -Path $LauncherBat -Encoding ASCII
 
 # Debug launcher .bat (shows console)
-$DebugBat = Join-Path $EnvRoot "CoPaw Desktop (Debug).bat"
+$DebugBat = Join-Path $EnvRoot "TimoBot (Debug).bat"
 @"
 @echo off
 cd /d "%~dp0"
@@ -213,7 +213,7 @@ if defined CERT_FILE (
 )
 
 echo ====================================
-echo CoPaw Desktop - Debug Mode
+echo TimoBot - Debug Mode
 echo ====================================
 echo Working Directory: %cd%
 echo Python: "%~dp0python.exe"
@@ -227,20 +227,20 @@ if not exist "%USERPROFILE%\.copaw\config.json" (
   echo [Init] Creating config...
   "%~dp0python.exe" -u -m copaw init --defaults --accept-security
 )
-echo [Launch] Starting CoPaw Desktop with log-level=%COPAW_LOG_LEVEL%...
+echo [Launch] Starting TimoBot with log-level=%COPAW_LOG_LEVEL%...
 echo Press Ctrl+C to stop
 echo.
 "%~dp0python.exe" -u -m copaw desktop --log-level %COPAW_LOG_LEVEL%
 echo.
-echo [Exit] CoPaw Desktop closed
+echo [Exit] TimoBot closed
 pause
 "@ | Set-Content -Path $DebugBat -Encoding ASCII
 
 # VBScript launcher (no console window)
-$LauncherVbs = Join-Path $EnvRoot "CoPaw Desktop.vbs"
+$LauncherVbs = Join-Path $EnvRoot "TimoBot.vbs"
 @"
 Set WshShell = CreateObject("WScript.Shell")
-batPath = CreateObject("Scripting.FileSystemObject").GetParentFolderName(WScript.ScriptFullName) & "\CoPaw Desktop.bat"
+batPath = CreateObject("Scripting.FileSystemObject").GetParentFolderName(WScript.ScriptFullName) & "\TimoBot.bat"
 WshShell.Run Chr(34) & batPath & Chr(34), 0, False
 Set WshShell = Nothing
 "@ | Set-Content -Path $LauncherVbs -Encoding ASCII
@@ -275,7 +275,7 @@ if (-not $Version) {
 if (-not $Version) { $Version = "0.0.0"; Write-Host "[build_win] WARN: Using fallback version 0.0.0" }
 Write-Host "[build_win] Version determined: $Version"
 Write-Host "[build_win] COPAW_VERSION=$Version OUTPUT_EXE will be under $Dist"
-$OutInstaller = Join-Path (Join-Path $RepoRoot $Dist) "CoPaw-Setup-$Version.exe"
+$OutInstaller = Join-Path (Join-Path $RepoRoot $Dist) "TimoBot-Setup-$Version.exe"
 # Pass absolute paths to NSIS (keep backslashes).
 $UnpackedFull = (Resolve-Path $EnvRoot).Path
 $OutputExeNsi = [System.IO.Path]::GetFullPath($OutInstaller)
