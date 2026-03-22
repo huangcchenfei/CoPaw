@@ -111,7 +111,7 @@ def desktop_cmd(
 
     port = _find_free_port(host)
     url = f"http://{host}:{port}"
-    click.echo(f"Starting TimoBot on {url} (port {port})")
+    click.echo(f"Starting 小数Claw on {url} (port {port})")
     logger.info("Server subprocess starting...")
 
     env = os.environ.copy()
@@ -173,7 +173,7 @@ def desktop_cmd(
                 logger.info("HTTP ready, creating webview window...")
                 api = WebViewAPI()
                 webview.create_window(
-                    "TimoBot",
+                    "小数Claw",
                     url,
                     width=1280,
                     height=800,

@@ -1,7 +1,7 @@
-# Build TimoBot Desktop: Windows (conda-pack + NSIS), macOS (conda-pack -> .app)
+# Build 小数Claw Desktop: Windows (conda-pack + NSIS), macOS (conda-pack -> .app)
 # Runs automatically on release publish; also manually via Actions tab.
 
-name: TimoBot Desktop Build
+name: 小数Claw Desktop Build
 
 on:
   release:
@@ -79,8 +79,8 @@ jobs:
       - name: Upload Windows artifact
         uses: actions/upload-artifact@v4
         with:
-          name: TimoBot-Desktop-Windows-${{ steps.version.outputs.version }}
-          path: dist/TimoBot-Setup-*.exe
+          name: 小数Claw-Desktop-Windows-${{ steps.version.outputs.version }}
+          path: dist/小数Claw-Setup-*.exe
 
   build-macos:
     runs-on: macos-14
@@ -121,8 +121,8 @@ jobs:
       - name: Upload macOS artifact
         uses: actions/upload-artifact@v4
         with:
-          name: TimoBot-Desktop-macOS-${{ steps.version.outputs.version }}
-          path: dist/TimoBot-*.zip
+          name: 小数Claw-Desktop-macOS-${{ steps.version.outputs.version }}
+          path: dist/小数Claw-*.zip
 
   upload-release:
     needs: [build-windows, build-macos]
@@ -136,15 +136,15 @@ jobs:
 
       - name: Move artifacts to root for upload
         run: |
-          mv TimoBot-Desktop-Windows-*/TimoBot-Setup-*.exe . 2>/dev/null || true
-          mv TimoBot-Desktop-macOS-*/TimoBot-*.zip . 2>/dev/null || true
+          mv 小数Claw-Desktop-Windows-*/小数Claw-Setup-*.exe . 2>/dev/null || true
+          mv 小数Claw-Desktop-macOS-*/小数Claw-*.zip . 2>/dev/null || true
 
       - name: Upload to Release
         uses: softprops/action-gh-release@v2
         with:
           files: |
-            TimoBot-Setup-*.exe
-            TimoBot-*-macOS.zip
+            小数Claw-Setup-*.exe
+            小数Claw-*-macOS.zip
           fail-on-unmatched-files: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

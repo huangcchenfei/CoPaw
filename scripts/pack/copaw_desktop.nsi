@@ -1,6 +1,6 @@
-; TimoBot NSIS installer. Run makensis from repo root after
+; 小数Claw NSIS installer. Run makensis from repo root after
 ; building dist/win-unpacked (see scripts/pack/build_win.ps1).
-; Usage: makensis /DCOPAW_VERSION=1.2.3 /DOUTPUT_EXE=dist\TimoBot-Setup-1.2.3.exe scripts\pack\copaw_desktop.nsi
+; Usage: makensis /DCOPAW_VERSION=1.2.3 /DOUTPUT_EXE=dist\小数Claw-Setup-1.2.3.exe scripts\pack\copaw_desktop.nsi
 
 !include "MUI2.nsh"
 !define MUI_ABORTWARNING
@@ -12,13 +12,13 @@
   !define COPAW_VERSION "0.0.0"
 !endif
 !ifndef OUTPUT_EXE
-  !define OUTPUT_EXE "dist\TimoBot-Setup-${COPAW_VERSION}.exe"
+  !define OUTPUT_EXE "dist\小数Claw-Setup-${COPAW_VERSION}.exe"
 !endif
 
-Name "TimoBot"
+Name "小数Claw"
 OutFile "${OUTPUT_EXE}"
-InstallDir "$LOCALAPPDATA\TimoBot"
-InstallDirRegKey HKCU "Software\TimoBot" "InstallPath"
+InstallDir "$LOCALAPPDATA\小数Claw"
+InstallDirRegKey HKCU "Software\小数Claw" "InstallPath"
 RequestExecutionLevel user
 
 !insertmacro MUI_PAGE_DIRECTORY
@@ -33,24 +33,24 @@ RequestExecutionLevel user
   !define UNPACKED "dist\win-unpacked"
 !endif
 
-Section "TimoBot" SEC01
+Section "小数Claw" SEC01
   SetOutPath "$INSTDIR"
   File /r "${UNPACKED}\*.*"
-  WriteRegStr HKCU "Software\TimoBot" "InstallPath" "$INSTDIR"
+  WriteRegStr HKCU "Software\小数Claw" "InstallPath" "$INSTDIR"
   WriteUninstaller "$INSTDIR\Uninstall.exe"
 
   ; Main shortcut - uses VBS to hide console window
-  CreateShortcut "$SMPROGRAMS\TimoBot.lnk" "$INSTDIR\TimoBot.vbs" "" "$INSTDIR\icon.ico" 0
-  CreateShortcut "$DESKTOP\TimoBot.lnk" "$INSTDIR\TimoBot.vbs" "" "$INSTDIR\icon.ico" 0
+  CreateShortcut "$SMPROGRAMS\小数Claw.lnk" "$INSTDIR\小数Claw.vbs" "" "$INSTDIR\icon.ico" 0
+  CreateShortcut "$DESKTOP\小数Claw.lnk" "$INSTDIR\小数Claw.vbs" "" "$INSTDIR\icon.ico" 0
   
   ; Debug shortcut - shows console window for troubleshooting
-  CreateShortcut "$SMPROGRAMS\TimoBot (Debug).lnk" "$INSTDIR\TimoBot (Debug).bat" "" "$INSTDIR\icon.ico" 0
+  CreateShortcut "$SMPROGRAMS\小数Claw (Debug).lnk" "$INSTDIR\小数Claw (Debug).bat" "" "$INSTDIR\icon.ico" 0
 SectionEnd
 
 Section "Uninstall"
-  Delete "$SMPROGRAMS\TimoBot.lnk"
-  Delete "$SMPROGRAMS\TimoBot (Debug).lnk"
-  Delete "$DESKTOP\TimoBot.lnk"
+  Delete "$SMPROGRAMS\小数Claw.lnk"
+  Delete "$SMPROGRAMS\小数Claw (Debug).lnk"
+  Delete "$DESKTOP\小数Claw.lnk"
   RMDir /r "$INSTDIR"
-  DeleteRegKey HKCU "Software\TimoBot"
+  DeleteRegKey HKCU "Software\小数Claw"
 SectionEnd
