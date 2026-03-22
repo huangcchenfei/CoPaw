@@ -156,6 +156,7 @@ if (Test-Path $pythonExe) {
 $LauncherBat = Join-Path $EnvRoot "小数Claw.bat"
 @"
 @echo off
+chcp 65001 >nul
 cd /d "%~dp0"
 
 REM Preserve system PATH for accessing system commands
@@ -183,12 +184,13 @@ if not exist "%USERPROFILE%\.copaw\config.json" (
   "%~dp0python.exe" -u -m copaw init --defaults --accept-security
 )
 "%~dp0python.exe" -u -m copaw desktop --log-level %COPAW_LOG_LEVEL%
-"@ | Set-Content -Path $LauncherBat -Encoding ASCII
+"@ | Set-Content -Path $LauncherBat -Encoding UTF8
 
 # Debug launcher .bat (shows console)
 $DebugBat = Join-Path $EnvRoot "小数Claw (Debug).bat"
 @"
 @echo off
+chcp 65001 >nul
 cd /d "%~dp0"
 
 REM Preserve system PATH for accessing system commands
@@ -234,7 +236,7 @@ echo.
 echo.
 echo [Exit] 小数Claw closed
 pause
-"@ | Set-Content -Path $DebugBat -Encoding ASCII
+"@ | Set-Content -Path $DebugBat -Encoding UTF8
 
 # VBScript launcher (no console window)
 $LauncherVbs = Join-Path $EnvRoot "小数Claw.vbs"
@@ -243,7 +245,7 @@ Set WshShell = CreateObject("WScript.Shell")
 batPath = CreateObject("Scripting.FileSystemObject").GetParentFolderName(WScript.ScriptFullName) & "\小数Claw.bat"
 WshShell.Run Chr(34) & batPath & Chr(34), 0, False
 Set WshShell = Nothing
-"@ | Set-Content -Path $LauncherVbs -Encoding ASCII
+"@ | Set-Content -Path $LauncherVbs -Encoding UTF8
 
 # Copy icon.ico to env root so NSIS can find it
 $IconSrc = Join-Path $PackDir "assets\icon.ico"
