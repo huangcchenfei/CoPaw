@@ -172,6 +172,20 @@ def desktop_cmd(
             if _wait_for_http(host, port):
                 logger.info("HTTP ready, creating webview window...")
                 api = WebViewAPI()
+
+                # Resolve custom icon: packaged env has icon.ico next to python.exe
+                _icon_path = None
+                for _candidate in [
+                    os.path.join(os.path.dirname(sys.executable), "icon.ico"),
+                    os.path.join(
+                        os.path.dirname(__file__),
+                        "..", "..", "..", "scripts", "pack", "assets", "icon.ico",
+                    ),
+                ]:
+                    if os.path.isfile(_candidate):
+                        _icon_path = os.path.abspath(_candidate)
+                        break
+
                 webview.create_window(
                     "XiaoshuClaw",
                     url,
@@ -183,8 +197,12 @@ def desktop_cmd(
                 logger.info(
                     "Calling webview.start() (blocks until closed)...",
                 )
+                _start_kwargs: dict = {"private_mode": False}
+                if _icon_path:
+                    logger.info(f"Using custom icon: {_icon_path}")
+                    _start_kwargs["icon"] = _icon_path
                 webview.start(
-                    private_mode=False,
+                    **_start_kwargs,
                 )  # blocks until user closes the window
                 logger.info("webview.start() returned (window closed).")
             else:
