@@ -263,6 +263,16 @@ Write-Host "=== EnvRoot=$EnvRoot ==="
 Write-Host "=== EnvRoot top files ==="
 Get-ChildItem -LiteralPath $EnvRoot -Force | Select-Object -First 50 | ForEach-Object { Write-Host $_.FullName }
 
+# Verify icon.ico exists in unpacked env before NSIS
+$IconInEnv = Join-Path $EnvRoot "icon.ico"
+if (Test-Path $IconInEnv) {
+  Write-Host "[build_win] OK: icon.ico found at $IconInEnv (size: $((Get-Item $IconInEnv).Length) bytes)"
+} else {
+  Write-Host "[build_win] ERROR: icon.ico NOT found at $IconInEnv"
+  Write-Host "[build_win] Source was: $IconSrc (exists: $(Test-Path $IconSrc))"
+  throw "icon.ico missing in unpacked env. NSIS will fail."
+}
+
 # Prioritize version from __version__.py to ensure accuracy
 $Version = $CurrentVersion
 if (-not $Version) {
@@ -284,9 +294,16 @@ $OutputExeNsi = [System.IO.Path]::GetFullPath($OutInstaller)
 $nsiArgs = @(
   "/DCOPAW_VERSION=$Version",
   "/DOUTPUT_EXE=$OutputExeNsi",
-  "/DUNPACKED=$UnpackedFull",
-  $NsiPath
+  "/DUNPACKED=$UnpackedFull"
 )
+# Only tell NSIS to use custom icon if icon.ico was successfully copied
+if (Test-Path (Join-Path $EnvRoot "icon.ico")) {
+  $nsiArgs += "/DHAS_ICON=1"
+  Write-Host "[build_win] icon.ico found, will use custom icon"
+} else {
+  Write-Host "[build_win] icon.ico not found, using default NSIS icon"
+}
+$nsiArgs += $NsiPath
 
 # Debug: Check if makensis is available
 Write-Host "=== Checking makensis availability ==="
@@ -301,15 +318,17 @@ Write-Host "[build_win] Running: makensis $($nsiArgs -join ' ')"
 Write-Host "=== NSIS will compile from: $NsiPath ==="
 Write-Host "=== NSIS unpacked source: $UnpackedFull ==="
 Write-Host "=== NSIS output installer: $OutputExeNsi ==="
-$nsisOutput = & makensis @nsiArgs 2>&1 | Out-String
-Write-Host "=== NSIS Output Begin ==="
-Write-Host $nsisOutput
-Write-Host "=== NSIS Output End ==="
-$makensisExit = $LASTEXITCODE
+
+# Stream NSIS output line by line to avoid encoding buffer issues
+$nsisProc = Start-Process -FilePath "makensis" -ArgumentList $nsiArgs -NoNewWindow -Wait -PassThru -RedirectStandardOutput "$Dist\nsis_stdout.txt" -RedirectStandardError "$Dist\nsis_stderr.txt"
+Write-Host "=== NSIS stdout ==="
+if (Test-Path "$Dist\nsis_stdout.txt") { Get-Content "$Dist\nsis_stdout.txt" | ForEach-Object { Write-Host $_ } }
+Write-Host "=== NSIS stderr ==="
+if (Test-Path "$Dist\nsis_stderr.txt") { Get-Content "$Dist\nsis_stderr.txt" | ForEach-Object { Write-Host $_ } }
+$makensisExit = $nsisProc.ExitCode
 Write-Host "[build_win] makensis exit code: $makensisExit"
 if ($makensisExit -ne 0) {
   Write-Host "ERROR: makensis compilation failed!"
-  Write-Host "Check the NSIS output above for specific errors."
   throw "makensis failed with exit code $makensisExit"
 }
 if (-not (Test-Path $OutInstaller)) {

@@ -4,9 +4,11 @@
 
 !include "MUI2.nsh"
 !define MUI_ABORTWARNING
-; Use custom icon from unpacked env (copied by build_win.ps1)
-!define MUI_ICON "${UNPACKED}\icon.ico"
-!define MUI_UNICON "${UNPACKED}\icon.ico"
+; Use custom icon from unpacked env (copied by build_win.ps1) if available
+!ifdef HAS_ICON
+  !define MUI_ICON "${UNPACKED}\icon.ico"
+  !define MUI_UNICON "${UNPACKED}\icon.ico"
+!endif
 
 !ifndef COPAW_VERSION
   !define COPAW_VERSION "0.0.0"
