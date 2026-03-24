@@ -197,12 +197,67 @@ def desktop_cmd(
                 logger.info(
                     "Calling webview.start() (blocks until closed)...",
                 )
-                _start_kwargs: dict = {"private_mode": False}
-                if _icon_path:
-                    logger.info(f"Using custom icon: {_icon_path}")
-                    _start_kwargs["icon"] = _icon_path
+
+                def _set_window_icon() -> None:
+                    """Inject custom icon via Windows API after window is ready."""
+                    if not _icon_path or sys.platform != "win32":
+                        return
+                    try:
+                        import ctypes
+                        from ctypes import wintypes
+
+                        user32 = ctypes.windll.user32  # type: ignore[attr-defined]
+                        WM_SETICON = 0x0080
+                        ICON_SMALL = 0
+                        ICON_BIG = 1
+                        IMAGE_ICON = 1
+                        LR_LOADFROMFILE = 0x0010
+                        LR_DEFAULTSIZE = 0x0040
+
+                        # Load icon from .ico file
+                        hicon_big = user32.LoadImageW(
+                            None,
+                            _icon_path,
+                            IMAGE_ICON,
+                            0, 0,
+                            LR_LOADFROMFILE | LR_DEFAULTSIZE,
+                        )
+                        hicon_small = user32.LoadImageW(
+                            None,
+                            _icon_path,
+                            IMAGE_ICON,
+                            16, 16,
+                            LR_LOADFROMFILE,
+                        )
+
+                        if not hicon_big:
+                            logger.warning("Failed to load icon (big)")
+                            return
+
+                        # Find the webview window by title
+                        hwnd = user32.FindWindowW(None, "XiaoshuClaw")
+                        if not hwnd:
+                            # Retry with slight delay
+                            time.sleep(0.5)
+                            hwnd = user32.FindWindowW(None, "XiaoshuClaw")
+
+                        if hwnd:
+                            user32.SendMessageW(hwnd, WM_SETICON, ICON_BIG, hicon_big)
+                            if hicon_small:
+                                user32.SendMessageW(
+                                    hwnd, WM_SETICON, ICON_SMALL, hicon_small,
+                                )
+                            logger.info(
+                                f"Window icon set via WM_SETICON (hwnd={hwnd})",
+                            )
+                        else:
+                            logger.warning("Could not find window handle")
+                    except Exception as e:
+                        logger.warning(f"Failed to set window icon: {e}")
+
                 webview.start(
-                    **_start_kwargs,
+                    private_mode=False,
+                    func=_set_window_icon,
                 )  # blocks until user closes the window
                 logger.info("webview.start() returned (window closed).")
             else:
